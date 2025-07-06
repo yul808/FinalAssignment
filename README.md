@@ -1,4 +1,4 @@
-# Final Assignment
+# Final Assignment / Project
 This repository serves as the Final Assignment for the Tech Basics 1 Course.
 
 ## Current Files in the Repository
