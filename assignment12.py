@@ -12,8 +12,8 @@ red_zones = [
     pygame.Rect(0, 450, 90, 300),
 ]
 
-png1_raw = pygame.image.load("pixel_art.png").convert_alpha()
-png2_raw = pygame.image.load("pixel_art-2.png").convert_alpha()
+png1_raw = pygame.image.load("media/pixel_art.png").convert_alpha()
+png2_raw = pygame.image.load("media/pixel_art-2.png").convert_alpha()
 png1 = pygame.transform.scale(png1_raw, (100, 80))
 png2 = pygame.transform.scale(png2_raw, (100, 80))
 
