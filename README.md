@@ -1,7 +1,9 @@
 # Final Assignment
 This repository serves as the Final Assignment for the Tech Basics 1 Course.
 
-### Current Code in the Repository
+## Current Files in the Repository
+
+### Code Files 
 - 'assignment12.py' (example code)
 
 ### Media Files
