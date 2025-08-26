@@ -1,7 +1,7 @@
 import pygame
 
 class Dungeon:
-    def __init__(self, tile_size=16, map_file="map.txt"):
+    def __init__(self, tile_size=16, map_file="map.txt"): # map.txt contains map layout
         self.tile_size = tile_size
         self.map_data = self.load_map(map_file)
 
@@ -9,9 +9,9 @@ class Dungeon:
         map_data = []
         with open(filename, "r") as f:
             for line in f:
-                # Leerzeichen/Zeilenumbruch entfernen
+                # remove spaces
                 line = line.strip()
-                # Jeden Character (z. B. "1" oder "0") in int umwandeln
+                # turn characters into int
                 row = [int(char) for char in line]
                 map_data.append(row)
         return map_data
@@ -25,3 +25,8 @@ class Dungeon:
                     pygame.draw.rect(surface, (100, 100, 100), rect)  # wall
                 else:
                     pygame.draw.rect(surface, (0, 0, 0), rect)  # floor
+
+    def is_wall(self, tile_x, tile_y):
+        if 0 <= tile_y < len(self.map_data) and 0 <= tile_x < len(self.map_data[0]):
+            return self.map_data[tile_y][tile_x] == 1
+        return True #collision detection
