@@ -4,44 +4,68 @@
 # It was also used to analyse errors with the code.
 
 import pygame
-from dungeon import Dungeon #importing map
-from player import Player #importing player
-from enemy import Enemy #importing enemies
-
+from dungeon import Dungeon
+from player import Player
+from enemy import Enemy
 
 pygame.init()
-display = pygame.display.set_mode((1200, 700)) #setting display
-pygame.display.set_caption("HAUNTED HOUSE") #game title in window
+display = pygame.display.set_mode((1200, 700))
+pygame.display.set_caption("HAUNTED HOUSE")
 clock = pygame.time.Clock()
 
-dungeon = Dungeon()
-player = Player(50, 50)  # player starting position
-enemies = [
-    Enemy(400, 400),
-    Enemy(800, 200),
-    Enemy(600, 300),
-    Enemy(60, 400)
-] #enemies starting positions
+#Game setup function
+def new_game():
+    dungeon = Dungeon()
+    player = Player(50, 50)
+    enemies = [
+        Enemy(400, 400),
+        Enemy(800, 200),
+        Enemy(600, 300),
+        Enemy(60, 400)
+    ]
+    return dungeon, player, enemies
 
-running = True # Main Game Loop
+dungeon, player, enemies = new_game()
+
+running = True
+game_over = False
+
+font = pygame.font.SysFont("consolas", 40)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-
     keys = pygame.key.get_pressed()
-    player.handle_input(keys, dungeon) #player input for movement (player.py)
 
-    for enemy in enemies:
-        enemy.update(player)  # update enemies according to player position (enemy.py)
+    if not game_over:
+        # Normal gameplay
+        player.handle_input(keys, dungeon)
 
-    display.fill((0,0,0))
-    dungeon.draw(display) #drawing map (dungeon.py)
-    player.draw(display) #drawing player (player.py)
+        for enemy in enemies:
+            enemy.update(player)
 
-    for enemy in enemies:
-        enemy.draw(display) #drawing enemies (enemy.py)
+        # Check for death
+        if player.check_collision(enemies):
+            game_over = True
+
+        # Draw
+        display.fill((0, 0, 0))
+        dungeon.draw(display)
+        player.draw(display)
+        for enemy in enemies:
+            enemy.draw(display)
+
+    else:
+        # Game Over screen
+        display.fill((0, 0, 0))
+        text = font.render("GAME OVER - Press SPACE to restart", True, (200, 0, 0))
+        display.blit(text, (200, 300))
+
+        if keys[pygame.K_SPACE]:
+            dungeon, player, enemies = new_game()
+            game_over = False
 
     pygame.display.flip()
     clock.tick(60)

@@ -46,3 +46,9 @@ class Player:
         rect = pygame.Rect(self.x, self.y, self.size, self.size)
         pygame.draw.rect(surface, self.color, rect)
 
+    def check_collision(self, enemies): #check collision with enemy
+        for enemy in enemies:
+            if self.rect.colliderect(enemy.rect):
+                return True
+        return False
+
