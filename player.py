@@ -7,7 +7,13 @@ class Player:
         self.size = size
         self.color = color
         self.speed = 4
+        self.keys_collected = 0
     # defining player
+
+    def collect_key(self, key):
+        if self.rect.colliderect(key.rect) and not key.collected:
+            key.collected = True
+            self.keys_collected += 1
 
     @property
     def rect(self):
