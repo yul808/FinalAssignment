@@ -7,6 +7,7 @@ class Player:
         self.size = size
         self.color = color
         self.speed = 4
+    # defining player
 
     @property
     def rect(self):
@@ -14,7 +15,7 @@ class Player:
 
     def can_move(self, new_x, new_y, dungeon): #helping method for collision
         rect = pygame.Rect(new_x, new_y, self.size, self.size)
-        # checking all corners
+        # checking all corners of player hit box
         corners = [
             (rect.left // dungeon.tile_size, rect.top // dungeon.tile_size),
             (rect.right // dungeon.tile_size, rect.top // dungeon.tile_size),
