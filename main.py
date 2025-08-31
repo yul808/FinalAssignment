@@ -42,7 +42,7 @@ font_big = pygame.font.SysFont("consolas", 72)
 font_small = pygame.font.SysFont("consolas", 36)
 
 # Exit zone rectangle (bottom left corner)
-exit_zone = pygame.Rect(50, 600, 80, 80)
+exit_zone = pygame.Rect(50, 575, 80, 80)
 
 while running:
     for event in pygame.event.get():
