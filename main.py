@@ -84,11 +84,19 @@ while running:
 
         # Check win condition
         if player.keys_collected == 5 and player.rect.colliderect(exit_zone):
-            final_time = elapsed_time
+            final_time = time_str
             game_state = "win"
 
+        #timer in format 1:23.456 (a lot of help from AI; initial prompt: "This is my current code for a timer. I would prefer the timer to count tens, hundreds and thousands of a second as well. That means the times should look like this: 1:23.456 (meaning 1 minute, 23.456 seconds). What would I have to change?")
+        elapsed_ms = pygame.time.get_ticks() - start_time
 
-        elapsed_time = (pygame.time.get_ticks() - start_time) // 1000  # seconds
+        minutes = elapsed_ms // 60000
+        seconds = (elapsed_ms % 60000) // 1000
+        milliseconds = elapsed_ms % 1000
+
+        time_str = f"{minutes}:{seconds:02}.{milliseconds:03}"
+        # :02 ensures seconds always show two digits
+        # :03 ensures milliseconds always show three digits
 
         # Draw world
         display.fill((0, 0, 0))
@@ -97,6 +105,16 @@ while running:
         # Draw keys
         for key in keys:
             key.draw(display)
+
+        # timer
+        elapsed_ms = pygame.time.get_ticks() - start_time
+        minutes = elapsed_ms // 60000
+        seconds = (elapsed_ms % 60000) // 1000
+        milliseconds = elapsed_ms % 1000
+        time_str = f"{minutes}:{seconds:02}.{milliseconds:03}"
+
+        time_text = font_small.render(f"{time_str}", True, (255, 255, 255))
+        display.blit(time_text, (1000, 20))
 
         # Draw exit zone
         pygame.draw.rect(display, (0, 0, 200), exit_zone)
@@ -107,12 +125,8 @@ while running:
             enemy.draw(display)
 
         # Show collected keys
-        text = font_small.render(f"Keys: {player.keys_collected}/5", True, (255, 255, 0))
+        text = font_small.render(f"Keys {player.keys_collected}/5", True, (255, 255, 0))
         display.blit(text, (20, 20))
-
-        # Show timer
-        time_text = font_small.render(f"Time: {elapsed_time}s", True, (255, 255, 255))
-        display.blit(time_text, (1050, 20))
 
     elif game_state == "game_over":
         display.fill((0, 0, 0))
@@ -132,8 +146,8 @@ while running:
         text = font_big.render("YOU ESCAPED!", True, (0, 200, 0))
 
         if final_time is not None:
-            time_text = font_small.render(f"Your Time: {final_time}s", True, (255, 255, 255))
-            display.blit(time_text, (480, 350))
+            time_text = font_small.render(f"Your Time: {final_time}", True, (255, 255, 255))
+            display.blit(time_text, (460, 350))
 
         prompt = font_small.render("Press SPACE to play again", True, (255, 255, 255))
         display.blit(text, (400, 250))
