@@ -14,6 +14,26 @@ display = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("HAUNTED HOUSE")
 clock = pygame.time.Clock()
 
+# helper function for later use
+def load_best_times(filename="times.txt"):
+    times = []
+    try:
+        with open(filename, "r") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    # parse "M:SS.mmm" into total milliseconds for sorting
+                    minutes, rest = line.split(":", 1)
+                    seconds, millis = rest.split(".", 1)
+                    total_ms = int(minutes) * 60000 + int(seconds) * 1000 + int(millis)
+                    times.append((total_ms, line))
+    except FileNotFoundError:
+        pass
+
+    # Sort by total milliseconds, return the 5 best (help from AI)
+    times.sort(key=lambda t: t[0])
+    return [t[1] for t in times[:5]]
+
 # Game setup function (so we can reset easily)
 def new_game():
     dungeon = Dungeon()
@@ -61,6 +81,13 @@ while running:
         display.blit(title, (350, 250))
         display.blit(prompt, (420, 400))
 
+        best_scores = load_best_times()
+        y = 500
+        for score in best_scores:
+            score_text = font_small.render(score, True, (200, 200, 200))
+            display.blit(score_text, (480, y))
+            y += 40
+
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
             start_time = pygame.time.get_ticks()
@@ -87,7 +114,11 @@ while running:
             final_time = time_str
             game_state = "win"
 
-        #timer in format 1:23.456 (a lot of help from AI; initial prompt: "This is my current code for a timer. I would prefer the timer to count tens, hundreds and thousands of a second as well. That means the times should look like this: 1:23.456 (meaning 1 minute, 23.456 seconds). What would I have to change?")
+            # Save time to file
+            with open("times.txt", "a") as f:
+                f.write(final_time + "\n")
+
+        # timer code 1/2; in format 1:23.456 (a lot of help from AI; initial prompt: "This is my current code for a timer for a small game. I would prefer the timer to count tens, hundreds and thousands of a second as well. That means the times should look like this: 1:23.456 (meaning 1 minute, 23.456 seconds). What would I have to change?")
         elapsed_ms = pygame.time.get_ticks() - start_time
 
         minutes = elapsed_ms // 60000
@@ -106,7 +137,7 @@ while running:
         for key in keys:
             key.draw(display)
 
-        # timer
+        # timer code 2/2
         elapsed_ms = pygame.time.get_ticks() - start_time
         minutes = elapsed_ms // 60000
         seconds = (elapsed_ms % 60000) // 1000
@@ -135,6 +166,13 @@ while running:
         display.blit(text, (430, 250))
         display.blit(prompt, (420, 400))
 
+        best_scores = load_best_times()
+        y = 500
+        for score in best_scores:
+            score_text = font_small.render(score, True, (200, 200, 200))
+            display.blit(score_text, (480, y))
+            y += 40
+
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
             start_time = pygame.time.get_ticks()
@@ -152,6 +190,13 @@ while running:
         prompt = font_small.render("Press SPACE to play again", True, (255, 255, 255))
         display.blit(text, (400, 250))
         display.blit(prompt, (380, 400))
+
+        best_scores = load_best_times()
+        y = 500
+        for score in best_scores:
+            score_text = font_small.render(score, True, (200, 200, 200))
+            display.blit(score_text, (480, y))
+            y += 40
 
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
