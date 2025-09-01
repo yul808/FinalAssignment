@@ -41,6 +41,9 @@ game_state = "start"  #possible game states: "start", "playing", "game_over", "w
 font_big = pygame.font.SysFont("consolas", 72)
 font_small = pygame.font.SysFont("consolas", 36)
 
+start_time = 0
+final_time = None
+
 # Exit zone rectangle (bottom left corner)
 exit_zone = pygame.Rect(50, 575, 80, 80)
 
@@ -60,6 +63,8 @@ while running:
 
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
+            start_time = pygame.time.get_ticks()
+            final_time = None
             game_state = "playing"
 
     elif game_state == "playing":
@@ -79,7 +84,11 @@ while running:
 
         # Check win condition
         if player.keys_collected == 5 and player.rect.colliderect(exit_zone):
+            final_time = elapsed_time
             game_state = "win"
+
+
+        elapsed_time = (pygame.time.get_ticks() - start_time) // 1000  # seconds
 
         # Draw world
         display.fill((0, 0, 0))
@@ -101,6 +110,10 @@ while running:
         text = font_small.render(f"Keys: {player.keys_collected}/5", True, (255, 255, 0))
         display.blit(text, (20, 20))
 
+        # Show timer
+        time_text = font_small.render(f"Time: {elapsed_time}s", True, (255, 255, 255))
+        display.blit(time_text, (1050, 20))
+
     elif game_state == "game_over":
         display.fill((0, 0, 0))
         text = font_big.render("GAME OVER", True, (200, 0, 0))
@@ -110,17 +123,26 @@ while running:
 
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
+            start_time = pygame.time.get_ticks()
+            final_time = None
             game_state = "playing"
 
     elif game_state == "win":
         display.fill((0, 0, 0))
         text = font_big.render("YOU ESCAPED!", True, (0, 200, 0))
+
+        if final_time is not None:
+            time_text = font_small.render(f"Your Time: {final_time}s", True, (255, 255, 255))
+            display.blit(time_text, (480, 350))
+
         prompt = font_small.render("Press SPACE to play again", True, (255, 255, 255))
         display.blit(text, (400, 250))
         display.blit(prompt, (380, 400))
 
         if keys_pressed[pygame.K_SPACE]:
             dungeon, player, enemies, keys = new_game()
+            start_time = pygame.time.get_ticks()
+            final_time = None
             game_state = "playing"
 
     pygame.display.flip()
