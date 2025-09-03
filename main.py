@@ -76,6 +76,8 @@ start_time = 0
 final_time = None
 
 # Exit zone rectangle (bottom left corner)
+exit_image = pygame.image.load("media/exit.png").convert_alpha()
+exit_image = pygame.transform.scale(exit_image, (80, 80))
 exit_zone = pygame.Rect(50, 575, 80, 80)
 
 while running:
@@ -159,7 +161,7 @@ while running:
         display.blit(time_text, (1000, 20))
 
         # Draw exit zone
-        pygame.draw.rect(display, (0, 0, 200), exit_zone)
+        display.blit(exit_image, (exit_zone.x, exit_zone.y))
 
         # Draw player and enemies
         player.draw(display)

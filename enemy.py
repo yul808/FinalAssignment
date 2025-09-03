@@ -1,13 +1,16 @@
 import pygame
+import random
 import math #math library suggested by AI
 
 class Enemy:
-    def __init__(self, x, y, size=32, color=(200, 0, 0)):
+    def __init__(self, x, y, size=40):
         self.x = x
         self.y = y
         self.size = size
-        self.color = color
         self.speed = 1.5
+
+        self.image = pygame.image.load("media/enemies.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
 
     @property
     def rect(self):
@@ -27,6 +30,13 @@ class Enemy:
             self.x += dx * self.speed
             self.y += dy * self.speed
 
+        if random.randint(0, 60) == 0:
+            r = random.randint(50, 255)
+            g = random.randint(50, 255)
+            b = random.randint(50, 255)
+            self.image = pygame.image.load("media/enemies.png").convert_alpha()
+            self.image.fill((r, g, b), special_flags=pygame.BLEND_RGBA_MULT)
+            self.image = pygame.transform.scale(self.image, (self.size, self.size))
+
     def draw(self, surface):
-        rect = pygame.Rect(self.x, self.y, self.size, self.size)
-        pygame.draw.rect(surface, self.color, rect)
+        surface.blit(self.image, (self.x, self.y))

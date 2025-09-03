@@ -1,14 +1,15 @@
 import pygame
 
-class Player:
-    def __init__(self, x, y, size=32, color=(0, 200, 0)):
+class Player: #defining player
+    def __init__(self, x, y, size=40):
         self.x = x
         self.y = y
         self.size = size
-        self.color = color
-        self.speed = 4
+        self.speed = 4.5
         self.keys_collected = 0
-    # defining player
+
+        self.image = pygame.image.load("media/player.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
 
     def collect_key(self, key):
         if self.rect.colliderect(key.rect) and not key.collected:
@@ -49,8 +50,7 @@ class Player:
             self.x, self.y = new_x, new_y
 
     def draw(self, surface):
-        rect = pygame.Rect(self.x, self.y, self.size, self.size)
-        pygame.draw.rect(surface, self.color, rect)
+        surface.blit(self.image, (self.x, self.y))
 
     def check_collision(self, enemies): #check collision with enemy
         for enemy in enemies:
