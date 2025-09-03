@@ -21,12 +21,23 @@ def load_best_times(filename="times.txt"):
         with open(filename, "r") as f:
             for line in f:
                 line = line.strip()
-                if line:
+                if not line:
+                    continue
+
+                # Split into time part and optional tag (with help from AI for this step)
+                parts = line.split(" ", 1)
+                time_part = parts[0]
+                tag = " " + parts[1] if len(parts) > 1 else ""
+
+                try:
                     # parse "M:SS.mmm" into total milliseconds for sorting
-                    minutes, rest = line.split(":", 1)
+                    minutes, rest = time_part.split(":", 1)
                     seconds, millis = rest.split(".", 1)
                     total_ms = int(minutes) * 60000 + int(seconds) * 1000 + int(millis)
-                    times.append((total_ms, line))
+
+                    times.append((total_ms, time_part + tag))
+                except ValueError:
+                    continue
     except FileNotFoundError:
         pass
 
