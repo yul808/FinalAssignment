@@ -14,6 +14,16 @@ display = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("HAUNTED HOUSE")
 clock = pygame.time.Clock()
 
+# screen design by ChatGPT
+start_img = pygame.image.load("media/screen_start.png").convert()
+start_img = pygame.transform.scale(start_img, (1200, 700))
+
+game_over_img = pygame.image.load("media/screen_gameover.png").convert()
+game_over_img = pygame.transform.scale(game_over_img, (1200, 700))
+
+win_img = pygame.image.load("media/screen_win.png").convert()
+win_img = pygame.transform.scale(win_img, (1200, 700))
+
 # helper function for later use
 def load_best_times(filename="times.txt"):
     times = []
@@ -88,17 +98,13 @@ while running:
     keys_pressed = pygame.key.get_pressed()
 
     if game_state == "start":
-        display.fill((0, 0, 0))
-        title = font_big.render("HAUNTED HOUSE", True, (200, 0, 0))
-        prompt = font_small.render("Press SPACE to start", True, (255, 255, 255))
-        display.blit(title, (350, 250))
-        display.blit(prompt, (420, 400))
+        display.blit(start_img, (0, 0))  # show the start screen
 
         best_scores = load_best_times()
-        y = 500
+        y = 450
         for score in best_scores:
-            score_text = font_small.render(score, True, (200, 200, 200))
-            display.blit(score_text, (480, y))
+            score_text = font_small.render(score, True, (225, 204, 151))
+            display.blit(score_text, (450, y))
             y += 40
 
         if keys_pressed[pygame.K_SPACE]:
@@ -173,17 +179,14 @@ while running:
         display.blit(text, (20, 20))
 
     elif game_state == "game_over":
-        display.fill((0, 0, 0))
-        text = font_big.render("GAME OVER", True, (200, 0, 0))
-        prompt = font_small.render("Press SPACE to restart", True, (255, 255, 255))
-        display.blit(text, (430, 250))
-        display.blit(prompt, (420, 400))
+        display.blit(game_over_img, (0, 0))  # show the game over screen
 
         best_scores = load_best_times()
-        y = 500
+
+        y = 350
         for score in best_scores:
             score_text = font_small.render(score, True, (200, 200, 200))
-            display.blit(score_text, (480, y))
+            display.blit(score_text, (450, y))
             y += 40
 
         if keys_pressed[pygame.K_SPACE]:
@@ -193,22 +196,17 @@ while running:
             game_state = "playing"
 
     elif game_state == "win":
-        display.fill((0, 0, 0))
-        text = font_big.render("YOU ESCAPED!", True, (0, 200, 0))
+        display.blit(win_img, (0, 0))  # show the end screen
 
         if final_time is not None:
-            time_text = font_small.render(f"Your Time: {final_time}", True, (255, 255, 255))
-            display.blit(time_text, (460, 350))
-
-        prompt = font_small.render("Press SPACE to play again", True, (255, 255, 255))
-        display.blit(text, (400, 250))
-        display.blit(prompt, (380, 400))
+            time_text = font_small.render(f"{final_time}", True, (244, 208, 125))
+            display.blit(time_text, (750, 215))
 
         best_scores = load_best_times()
-        y = 500
+        y = 450
         for score in best_scores:
-            score_text = font_small.render(score, True, (200, 200, 200))
-            display.blit(score_text, (480, y))
+            score_text = font_small.render(score, True, (244, 208, 125))
+            display.blit(score_text, (500, y))
             y += 40
 
         if keys_pressed[pygame.K_SPACE]:
