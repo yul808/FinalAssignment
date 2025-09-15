@@ -16,13 +16,19 @@ The current developer record is 16.658 seconds. Can you beat it?
 - 'dungeon.py' (defines map)
 - 'enemy.py' (defines NPCs)
 - 'key.py' (defines collectibles)
-- 'assignment12.py' (example code)
 - 'map.txt' (used by dungeon.py)
 - 'times.txt' (used by main.py)
 
 ### Media Files
-- 'pixel_art.png'
-- 'pixel_art-2.png'
+- 'enemies.png'
+- 'exit.png'
+- 'floor.png'
+- 'keys.png'
+- 'player.png'
+- 'screen_gameover.png'
+- 'screen_start.png'
+- 'screen_win.png'
+- 'wall.png'
 
 ### Other Files
 - 'LICENCE'

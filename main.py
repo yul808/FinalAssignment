@@ -130,7 +130,7 @@ while running:
 
         # Check win condition
         if player.keys_collected == 5 and player.rect.colliderect(exit_zone):
-            final_time = time_str
+            final_time = time_str # I am aware of the warning, but since the value is practically assigned on time (due to loop set up), I decided to ignore it.
             game_state = "win"
 
             # Save time to file
@@ -185,7 +185,7 @@ while running:
 
         y = 350
         for score in best_scores:
-            score_text = font_small.render(score, True, (200, 200, 200))
+            score_text = font_small.render(score, True, (248, 80, 63))
             display.blit(score_text, (450, y))
             y += 40
 
